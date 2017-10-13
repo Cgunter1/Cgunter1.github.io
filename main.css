@@ -2,7 +2,8 @@ body {
 	margin:0;
 }
 
-ul {
+#navigationbar {
+	margin-top: 500px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -43,6 +44,7 @@ li a:hover:not(.active) {
 }
 
 #content {
+	padding-top: 70px;
 	padding:20px;
 	margin-top:80px;
 	background-color:#df4620;
@@ -51,4 +53,22 @@ li a:hover:not(.active) {
 	margin-right: 40px;
 	margin-bottom: 40px;
 	text-align: center;
+	border-radius: 30px;
+}
+
+#profile {
+	padding-top: 50px;
+	padding-right: 750px;
+	background-size: 100px;
+	width:304px;
+	height:275px;
+}
+
+#descript {
+	padding-bottom: 200px;
+	color: white;
+}
+
+.mainAbout {
+
 }
