@@ -16,11 +16,11 @@ body {
     border-bottom-right-radius: 10px;
 }
 
-li {
+.navItem {
     float: left;
 }
 
-li a {
+.navItem a {
     display: block;
     color: white;
     text-align: center;
@@ -28,7 +28,7 @@ li a {
     text-decoration: none;
 }
 
-li a:hover:not(.active) {
+.navItem a:hover:not(.active) {
     background-color: #ff3300;
 }
 
@@ -58,17 +58,35 @@ li a:hover:not(.active) {
 
 #profile {
 	padding-top: 50px;
-	padding-right: 750px;
 	background-size: 100px;
 	width:304px;
 	height:275px;
 }
 
 #descript {
-	padding-bottom: 200px;
+	padding-right: 400px;
+	padding-top: 100px;
 	color: white;
 }
 
-.mainAbout {
+#content a {
+	text-decoration: none;
+	color: #000
+}
 
+#content a:hover {
+	color: #fff;
+}
+
+#content #projecTitle {
+	font-size: 27px;
+}
+
+.projectProfile {
+	width: 220px;
+    height: 300px;
+    display: -webkit-flex;  Safari 
+    -webkit-align-items: center; /* Safari 7.0+ */
+    display: flex;
+    align-items: center;
 }
