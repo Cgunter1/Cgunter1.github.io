@@ -90,3 +90,33 @@ body {
     display: flex;
     align-items: center;
 }
+
+#item1 {
+	margin-left: 0px;
+}
+
+#item2 {
+	margin-left: 10px;
+}
+
+#contentProject {
+	padding-top: 70px;
+	padding:20px;
+	margin-top:80px;
+	background-color:#df4620;
+	height:700px;
+	margin-left: 40px;
+	margin-right: 40px;
+	margin-bottom: 40px;
+	text-align: center;
+	border-radius: 30px;
+}
+
+#contentProject a {
+	text-decoration: none;
+	color: #000
+}
+
+#contentProject a:hover {
+	color: #fff;
+}
