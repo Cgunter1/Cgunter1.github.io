@@ -16,6 +16,7 @@ class Geometry {
       this.shader = shader;
   }
 
+  //  Change the render function tor change the Geometry every frame, then call interleaveVertices.
   /**
    * A callback used to modify a geometry every frame (60 typically).
    */

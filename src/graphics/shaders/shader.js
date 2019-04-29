@@ -46,4 +46,26 @@ class Shader {
         var location = this.gl.getUniformLocation(this.program, uniformName);
         this.uniformLocations.push({"name": uniformName, "type": type, "location": location, "value": value});
     }
+
+    /**
+     * Adds an attribute variable, stores it's type, and stores it's location.
+     * Acceptable types: float, vec2, vec3, vec4, mat2, mat3, mat4
+     *
+     * @param {String} uniformName Name of the uniform variable
+     * @param {String} type Type of the uniform variable
+     * @param value Value assigned to uniform variable
+     */
+    addUniform(uniformName, type, value) {
+        var location = this.gl.getUniformLocation(this.program, uniformName);
+        this.uniformLocations.push({"name": uniformName, "type": type, "location": location, "value": value});
+    }
+
+    changeUniform(uniformName, value) {
+        for(let i = 0; i < this.uniformLocations.length; ++i){
+            if(this.uniformLocations[i]["name"] == uniformName){
+                this.uniformLocations[i]["value"] = value;
+                break;
+            }
+        }
+    }
 }

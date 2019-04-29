@@ -6,6 +6,12 @@ var _inputHandler = null;
  * @author Lucas N. Ferreira
  * @this {Scene}
  */
+
+// ********************************************************************
+// PERHAPS MAKE IT SO THAT YOU DON'T REPEATEDLY CALL GET ELEMENT BY ID.
+// Also change attributes and uniform variables into dictionaries instead
+// of arrays.
+// ********************************************************************
 class InputHandler {
     /**
      * Initializes the event handeling functions within the program.
@@ -29,9 +35,14 @@ class InputHandler {
 
       // Button Events:
       this.doc.getElementById("clearcanvas").onclick = function(ev){ _inputHandler.clearcanvas(ev)};
-      this.doc.getElementById("trianglesbutton").onclick = function(ev){ _inputHandler.scene.shape = 0};
-      this.doc.getElementById("sqauresbutton").onclick = function(ev){ _inputHandler.scene.shape = 1};
-      this.doc.getElementById("circlesbutton").onclick = function(ev){ _inputHandler.scene.shape = 2};
+      this.doc.getElementById("addobject").onclick = function(){ _inputHandler.scene.shape = 7;};
+      
+      // Pick Shape Events:
+      this.doc.getElementById("spinningsquares").onclick = function(ev){ _inputHandler.scene.shape = 3;};
+      this.doc.getElementById("fluctuatingtriangles").onclick = function(ev){ _inputHandler.scene.shape = 4;};
+      this.doc.getElementById("movingcircle").onclick = function(ev){ _inputHandler.scene.shape = 5;};
+      this.doc.getElementById("tiltedcube").onclick = function(ev){ _inputHandler.scene.shape = 6;};
+
     }
 
     /*
@@ -74,8 +85,6 @@ class InputHandler {
     click(ev) {
         // Find the x,y coordinates of the center.
         let [x, y] = _inputHandler.position;
-        console.log(`${x} ${y}`);
-
 
         // Calculating Size.
         let size = this.doc.getElementById("sizeslider").value;
@@ -95,12 +104,32 @@ class InputHandler {
           case 2:
             shape = new Circle(shader, size, x, y, color, this.getCircleSegments());
             break;
+          case 3:
+            shape = new SpinSquare(shaderRotation, size, x, y, color);
+            break;
+          case 4:
+            shape = new ScalingTriangle(shaderRotation, size, x, y, color);
+            break;
+          case 5:
+            shape = new RandomCircle(shaderRotation, size, x, y, color, this.getCircleSegments());
+            break;
+          case 6:
+            shape = new Cube(shaderRotation, size, x, y, color);
+            break;
+          case 7:
+            _inputHandler.readSelectedFile(x, y, color);
+            break; 
           default:
             console.error("Should not be able to get here");
             break;
-          }
-        this.scene.addGeometry(shape);
-    }
+        }
+        // ***************************************
+        // Fix this later with Promises...
+        // ***************************************
+        if(this.scene.shape != 7){
+          this.scene.addGeometry(shape);
+        }
+      }
 
     clearcanvas(ev){
       this.scene.clearGeometries();
@@ -116,4 +145,23 @@ class InputHandler {
       this.doc.getElementById("xCoordinate").innerHTML = _inputHandler.position[0];
       this.doc.getElementById("yCoordinate").innerHTML = _inputHandler.position[1];
     }
+
+    /*
+     * Function called when it needs to read a OBJ file that is uploaded to the webpage.
+    */
+  readSelectedFile(x, y, color){
+    var fileReader = new FileReader();
+    var objFile = _inputHandler.doc.getElementById("fileinput").files[0];
+
+    if(!objFile){
+      alert("OBJ file not set!");
+      return;
+    }
+
+    fileReader.readAsText(objFile);
+    fileReader.onloadend = function(){
+      _inputHandler.scene.addGeometry(new CustomOBJ(shaderRotation, fileReader.result, null, color, x, y));
+    }
+
+  }
 }

@@ -38,6 +38,8 @@ class Renderer {
         requestAnimationFrame(_renderer.start);
     }
 
+    // Perhaps go into here and change it, so it will accept animations also.
+
     /**
      * Renders all the geometry within the scene.
      */
@@ -107,7 +109,6 @@ class Renderer {
       // Send attributes
       for (var i = 0; i < shader.attributeLocations.length; i++) {
           var attribute = shader.attributeLocations[i]["location"];
-
           this.gl.vertexAttribPointer(attribute, dataCounts[i], this.gl.FLOAT, false, dataEnd, currentDataStart);
           this.gl.enableVertexAttribArray(attribute);
 
@@ -117,7 +118,7 @@ class Renderer {
        // Send uniforms
        for (var i = 0; i < shader.uniformLocations.length; i++) {
            this.sendUniformToGLSL(shader.uniformLocations[i]);
-        }
+       }
     }
 
     /**
@@ -167,7 +168,6 @@ class Renderer {
      * @param {Integer} pointCount The amount of vertices being drawn from the buffer.
      */
     drawBuffer(indicesLength, isCircle) {
-      console.log(isCircle);
       if(!isCircle){
         this.gl.drawElements(this.gl.TRIANGLES, indicesLength, this.gl.UNSIGNED_SHORT, 0);
       } else {
