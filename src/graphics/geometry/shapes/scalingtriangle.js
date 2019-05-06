@@ -1,6 +1,6 @@
 class ScalingTriangle extends Triangle {
-    constructor(shader, size, centerX, centerY, color) {
-        super(shader, size, centerX, centerY, color);
+    constructor(shader, size, centerX, centerY, color, colorType) {
+        super(shader, size, centerX, centerY, color, colorType);
 
         this.center = [centerX, centerY];
         this.scaleFactor = .1;

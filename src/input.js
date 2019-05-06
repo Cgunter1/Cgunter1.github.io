@@ -22,8 +22,18 @@ class InputHandler {
       this.doc = doc;
       this.interval;
       this.position;
-
+      this.solidcolor = true;
+      this.image = null;
       _inputHandler = this;
+      this.default_image = new Image();
+
+      this.default_image.onload = function() {
+        _inputHandler.scene.addGeometry(new MultiTexCube(shaderTexture, .75, .25, 0, _inputHandler.getColorStatus(), false, _inputHandler.default_image));
+      };
+
+      this.default_image.src = "objs/cat_.jpg";
+
+      // _inputHandler.scene.addGeometry(new TexCube(shaderTexture, size, x, y, color, false, _inputHandler.image));
 
       // Mouse Events
       this.canvas.onmousedown = function(ev) {
@@ -36,6 +46,8 @@ class InputHandler {
       // Button Events:
       this.doc.getElementById("clearcanvas").onclick = function(ev){ _inputHandler.clearcanvas(ev)};
       this.doc.getElementById("addobject").onclick = function(){ _inputHandler.scene.shape = 7;};
+      this.doc.getElementById("changecolortype").onclick = function(){ _inputHandler.changecolor()};
+      document.getElementById('texInput').onchange = function() { _inputHandler.readTexture() };
       
       // Pick Shape Events:
       this.doc.getElementById("spinningsquares").onclick = function(ev){ _inputHandler.scene.shape = 3;};
@@ -79,6 +91,20 @@ class InputHandler {
       return this.doc.getElementById("segmentslider").value;
     }
 
+    /*
+    * Function called to change the color from solid to rainbow and
+    * vice-versa.
+    */
+   changecolor(){
+      if(_inputHandler.solidcolor){
+        this.doc.getElementById("changecolortype").innerHTML = "🌈RAINBOW🌈";
+        _inputHandler.solidcolor = !_inputHandler.solidcolor;
+      } else {
+        this.doc.getElementById("changecolortype").innerHTML = "Solid Color ☹️";
+        _inputHandler.solidcolor = !_inputHandler.solidcolor;
+      }
+   }
+
     /**
      * Function called upon mouse click.
      */
@@ -96,25 +122,30 @@ class InputHandler {
         var shape;
         switch(this.scene.shape){
           case 0:
-            shape = new Triangle(shader, size, x, y, color);
+            shape = new Triangle(shader, size, x, y, color, _inputHandler.solidcolor);
             break;
           case 1:
-            shape = new Square(shader, size, x, y, color);
+            shape = new Square(shader, size, x, y, color, _inputHandler.solidcolor);
             break;
           case 2:
-            shape = new Circle(shader, size, x, y, color, this.getCircleSegments());
+            shape = new Circle(shader, size, x, y, color, this.getCircleSegments(), _inputHandler.solidcolor);
             break;
           case 3:
-            shape = new SpinSquare(shaderRotation, size, x, y, color);
+            shape = new SpinSquare(shaderRotation, size, x, y, color, _inputHandler.solidcolor);
             break;
           case 4:
-            shape = new ScalingTriangle(shaderRotation, size, x, y, color);
+            shape = new ScalingTriangle(shaderRotation, size, x, y, color, _inputHandler.solidcolor);
             break;
           case 5:
-            shape = new RandomCircle(shaderRotation, size, x, y, color, this.getCircleSegments());
+            shape = new RandomCircle(shaderRotation, size, x, y, color, this.getCircleSegments(), _inputHandler.solidcolor);
             break;
           case 6:
-            shape = new Cube(shaderRotation, size, x, y, color);
+            console.log(this.image);
+            if(this.image == null){
+              shape = new Cube(shaderRotation, size, x, y, color, _inputHandler.solidcolor);
+            } else {
+              shape = new TexCube(shaderTexture, size, x, y, color, false, _inputHandler.image);
+            }
             break;
           case 7:
             _inputHandler.readSelectedFile(x, y, color);
@@ -160,8 +191,29 @@ class InputHandler {
 
     fileReader.readAsText(objFile);
     fileReader.onloadend = function(){
-      _inputHandler.scene.addGeometry(new CustomOBJ(shaderRotation, fileReader.result, null, color, x, y));
+      _inputHandler.scene.addGeometry(new CustomOBJ(shaderRotation, fileReader.result, null, color, x, y, _inputHandler.solidcolor));
     }
 
+  }
+
+  readTexture() {
+    // Create the image object
+    var image = new Image();
+    if (!image) {
+      console.log('Failed to create the image object');
+      return false;
+    }
+
+    // Register the event handler to be called on loading an image
+    image.onload = function() {
+        _inputHandler.image = image;
+    };
+
+    var imgPath = document.getElementById("texInput").value;
+    var imgPathSplit = imgPath.split("\\");
+
+    // Tell the browser to load an image
+    image.src = 'objs/' + imgPathSplit[imgPathSplit.length - 1];
+    return true;
   }
 }

@@ -14,6 +14,7 @@ class Geometry {
    */
   constructor(shader) {
       this.shader = shader;
+      this.image = null;
   }
 
   //  Change the render function tor change the Geometry every frame, then call interleaveVertices.

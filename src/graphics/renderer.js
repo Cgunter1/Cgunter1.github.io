@@ -18,6 +18,7 @@ class Renderer {
         this.gl = gl;
         this.scene = scene;
         this.camera = camera;
+        this.textures = {};
 
         this.initGLSLBuffers();
 
@@ -56,6 +57,16 @@ class Renderer {
             // geometry before the draw call
             this.scene.geometries[i].render();
 
+            if(this.scene.geometries[i].image != null) {
+              if(!(this.scene.geometries[i].image.src in this.textures)) {
+                  // Create a texture object and store id using its path as key
+                  this.textures[this.scene.geometries[i].image.src] = this.gl.createTexture();
+                  this.loadTexture(this.textures[this.scene.geometries[i].image.src], this.scene.geometries[i].image, i);
+              } else {
+                this.loadTexture(this.textures[this.scene.geometries[i].image.src], this.scene.geometries[i].image, i);
+              }
+            }
+
             // Draw geometry
             var geometry = this.scene.geometries[i];
             this.sendVertexDataToGLSL(geometry.data, geometry.dataCounts, geometry.shader);
@@ -79,7 +90,7 @@ class Renderer {
             console.log("Failed to create buffers!");
             return;
         }
-
+  
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, attributeBuffer);
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     }
@@ -113,11 +124,11 @@ class Renderer {
           this.gl.enableVertexAttribArray(attribute);
 
           currentDataStart += FSIZE * dataCounts[i];
-       }
+      }
 
        // Send uniforms
        for (var i = 0; i < shader.uniformLocations.length; i++) {
-           this.sendUniformToGLSL(shader.uniformLocations[i]);
+          this.sendUniformToGLSL(shader.uniformLocations[i]);
        }
     }
 
@@ -149,6 +160,9 @@ class Renderer {
             case "mat4":
               this.gl.uniformMatrix4fv(uniform["location"], false, uniform["value"]);
               break;
+            case "sampler2D":
+              this.gl.uniform1i(uniform.location, uniform.value);
+              break;
         }
     }
 
@@ -174,4 +188,22 @@ class Renderer {
         this.gl.drawElements(this.gl.TRIANGLE_FAN, indicesLength, this.gl.UNSIGNED_SHORT, 0);
       }
     }
+    
+    loadTexture(texture, image, num) {
+      // Flip the image's y axis
+      this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
+
+      // Enable texture unit0
+      // this.gl.activeTexture(this.gl.TEXTURE0+num);
+      
+      // Bind the texture object to the target
+      this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+      // Set the texture parameters
+      this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+      this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+
+      // Set the texture image
+      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
+  }
 }

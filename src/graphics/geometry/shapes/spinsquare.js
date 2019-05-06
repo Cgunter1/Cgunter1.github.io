@@ -1,6 +1,6 @@
 class SpinSquare extends Square {
-    constructor(shader, size, x, y, color){
-        super(shader, size, x, y, color);
+    constructor(shader, size, x, y, color, colorType){
+        super(shader, size, x, y, color, colorType);
         this.center = [x, y];
         this.angle = 0;
         this.u_RotationMatrix = new Matrix4();
