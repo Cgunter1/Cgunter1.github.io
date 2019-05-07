@@ -191,7 +191,12 @@ class InputHandler {
 
     fileReader.readAsText(objFile);
     fileReader.onloadend = function(){
-      _inputHandler.scene.addGeometry(new CustomOBJ(shaderRotation, fileReader.result, null, color, x, y, _inputHandler.solidcolor));
+      if(_inputHandler.image != null){
+        _inputHandler.scene.addGeometry(new CustomOBJ(shaderTexture, fileReader.result, _inputHandler.image, color, 0, 0, _inputHandler.solidcolor));
+      } else {
+        _inputHandler.scene.addGeometry(new CustomOBJ(shaderRotation, fileReader.result, null, color, 0, 0, _inputHandler.solidcolor));
+
+      }
     }
 
   }

@@ -15,30 +15,28 @@ class CustomOBJ extends Geometry {
    * @param color An optional color object with r,g,b,a components
    * @returns {LoadedOBJ} Constructed LoadedOBJ
    */
-  constructor(shader, objStr, color, imgPath) {
+  constructor(shader, objStr, image, color, x, y, colorType) {
     super(shader);
-
+    this.vertices = [];
+    this.center = [0, 0];
+    this.angle = 0;
     // If an image path/data url is provided, then load/save that image as a texture
-    if (imgPath != null) {
-      var self = this;
-      var callback = function(texture) { self.textures.push(texture); };
-      load2DTexture(imgPath, gl.LINEAR, gl.LINEAR, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, callback);
-    }
+    this.image = image;
 
     // Construct the Mesh object containg the OBJ file's information
     var objMesh = new OBJ.Mesh(objStr);
 
     // Construct the necessary amount of vertex objects within this.vertices
     for (var i = 0; i < objMesh.indices.length; i++) {
-      this.vertices[i] = new Vertex();
+      this.vertices[i] = new Vertex(null, null, null, null, colorType);
     }
 
     this.modelMatrix = new Matrix4();
 
     // Add the vertex points, normals, and uv coordinates in OBJ
     var transAndScaleVal = this.addVertexPoints(objMesh.indices, objMesh.vertices);
-    this.addVertexNormals(objMesh.indices, objMesh.vertexNormals);
     this.addVertexTextureCoordinates(objMesh.indices, objMesh.textures);
+    this.addVertexNormals(objMesh.indices, objMesh.vertexNormals);
 
     // Modify loadedOBJ's modelMatrix to present OBJ correctly
     this.moveOBJToCenterOfScreen(transAndScaleVal[0]);
@@ -130,20 +128,19 @@ class CustomOBJ extends Geometry {
    * @param {Array} textures The textures being added
    */
   addVertexTextureCoordinates(indices, textures) {
-    // If textures information is invalid, set vertex.texCoord to null for all vertices.
+    // If textures information is invalid, set vertex.uv to null for all vertices.
     if (this.isInvalidParameter(textures)) {
       for (var i = 0; i < indices.length; i++) {
-        this.vertices[i].texCoord = null;
+        this.vertices[i].textCoord = null;
       }
     }
     else {
       for (var i = 0; i < indices.length; i++) {
-        var index = indices[i];
-        var uv = [textures[index * 2], textures[index * 2 + 1]];
-
-        this.vertices[i].texCoord = uv;
+          var index = indices[i];
+          var uv = [textures[index * 2], textures[index * 2 + 1]];
+          this.vertices[i].textCoord = uv;
+        }  
       }
-    }
   }
 
   /**
@@ -152,17 +149,16 @@ class CustomOBJ extends Geometry {
    * @private
    */
   isInvalidParameter(parameter) {
-    if (parameter == null) {
-      return true;
-    }
-    if (parameter == []) {
-      return true;
-    }
-    if (isNaN(parameter[0])) {  // Can be array of just NaN
-      return true;
-    }
-
-    return false;
+      if (parameter == null) {
+          return true;
+      }
+      if (parameter == []) {
+          return true;
+      }
+      if (isNaN(parameter[0])) {  // Can be array of just NaN
+          return true;
+      }
+      return false;
   }
 
   /**
@@ -174,7 +170,8 @@ class CustomOBJ extends Geometry {
    * axis (indices: 0, 1, 2)
    */
   moveOBJToCenterOfScreen(transValue) {
-    this.modelMatrix.setTranslate(transValue[0], transValue[1], transValue[2]);
+      this.modelMatrix.setTranslate(transValue[0], transValue[1], transValue[2]);
+      this.shader.changeUniform("uxformMatrix", this.modelMatrix.elements);
   }
 
   /**
@@ -186,21 +183,17 @@ class CustomOBJ extends Geometry {
    * @param {Number} scaleValue Amount LoadedOBJ will be scaled by
    */
   scaleOBJToFitOnScreen(scaleValue) {
-    var scaleMatrix = new Matrix4();
-    scaleMatrix.setScale(scaleValue, scaleValue, scaleValue);
-    this.modelMatrix = scaleMatrix.multiply(this.modelMatrix);
+      var scaleMatrix = new Matrix4();
+      scaleMatrix.setScale(scaleValue, scaleValue, scaleValue);
+      this.modelMatrix = scaleMatrix.multiply(this.modelMatrix);
+      this.shader.changeUniform("uxformMatrix", this.modelMatrix.elements);
   }
-
-
-    render(){
-        this.angle += 1;
-        this.angle %= 360;
-        console.log(this.angle);
-        // You have to do the translation to the origin, turn angle, and translation back to the 
-        // original center backwards.
-        this.modelMatrix.setRotate(this.angle, 0, 1, 0);
-        this.shader.changeUniform("uxformMatrix", this.modelMatrix.elements);
-        // this.interleaveVertices();
-        console.log("ads");
-    }
+  render(){
+      this.angle += 1;
+      this.angle %= 360;
+      // You have to do the translation to the origin, turn angle, and translation back to the 
+      // original center backwards.
+      this.modelMatrix.setRotate(this.angle, 0, 1, 0);
+      this.shader.changeUniform("uxformMatrix", this.modelMatrix.elements);
+  }
 }

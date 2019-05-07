@@ -43,7 +43,7 @@ class TexCube extends Geometry {
  
       // Back
       var vertexBack1 = new Vertex(x - (size/2), y - (size/2), -(size/2), color, colorType);
-      vertexBack1.textCoord = [1.0, 0.5];
+      vertexBack1.textCoord = [1.0, 0.0];
 
       var vertexBack2 = new Vertex(x - (size/2), y + (size/2), -(size/2), color, colorType);
       vertexBack2.textCoord = [1.0, 1.0];
@@ -52,7 +52,7 @@ class TexCube extends Geometry {
       vertexBack3.textCoord = [0.0, 1.0];
 
       var vertexBack4 = new Vertex(x + (size/2), y - (size/2), -(size/2), color, colorType);
-      vertexBack4.textCoord = [0.0, 0.5];
+      vertexBack4.textCoord = [0.0, 0.0];
 
       vertices.push(vertexBack1);
       vertices.push(vertexBack2);
