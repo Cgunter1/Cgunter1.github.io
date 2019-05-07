@@ -1,0 +1,63 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title> CMPS160 Base Code </title>
+
+      <!-- Include shaders -->
+      <script src = "src/graphics/shaders/shader.js"></script>
+      <script src = "src/graphics/shaders/asg1.js"></script>
+
+      <!-- Include Base code libs -->
+      <script src = "src/main.js"></script>
+      <script src = "src/input.js"></script>
+      <script src = "src/graphics/renderer.js"></script>
+      <script src = "src/graphics/scene.js"></script>
+      <script src = "src/graphics/geometry/geometry.js"></script>
+      <script src = "src/graphics/geometry/vertex.js"></script> 
+      <script src = "src/graphics/geometry/shapes/triangle.js"></script>
+      <script src = "src/graphics/geometry/shapes/square.js"></script>
+      <script src = "src/graphics/geometry/shapes/circle.js"></script>
+      <script src = "src/graphics/geometry/shapes/spinsquare.js"></script>
+      <script src = "src/graphics/geometry/shapes/scalingtriangle.js"></script>
+      <script src = "src/graphics/geometry/shapes/randommovingcircle.js"></script>
+      <script src = "src/graphics/geometry/shapes/cube.js"></script>
+      <script src="src/graphics/geometry/shapes/custom.js"></script>
+      <script src="src/graphics/geometry/shapes/text_cube.js"></script>
+      <script src="src/graphics/geometry/uvvertex.js"></script>
+      <script src="src/graphics/geometry/shapes/multi_text_cube.js"></script>
+
+      <!-- Include external libs -->
+      <script src = "lib/webgl-utils.js"></script>
+      <script src = "lib/webgl-render.js"></script>
+      <script src = "lib/webgl-debug.js"></script>
+      <script src = "lib/webgl-loader.js"></script>
+      <script src = "lib/cuon-utils.js"></script>
+      <script src = "lib/cuon-matrix.js"></script>
+
+  </head>
+
+  <body onload = "main()">
+    <canvas id="webgl" width="400" height="400">
+      Please use a browser that supports "canvas"
+    </canvas>
+    <p>x: <span id="xCoordinate">0.0</span> y: <span id="yCoordinate">0.0</span></p>
+    <input id="clearcanvas" type="button" onclick="clearcanvas()" value="Clear Canvas"/>
+    Select Texture: <input type="file" id="texInput"/>
+    Set OBJ: <input type="file" id="fileinput"/>
+    <input type="button" id="addobject" value="Add OBJ to Scene"/>
+    <p>Drawing Mode:</p>
+    <button id="spinningsquares">Spinning Squares</button>
+    <button id="fluctuatingtriangles">Fluctuating Triangles</button>
+    <button id="movingcircle">Random Moving Circles</button>
+    <button id="tiltedcube">Tilted Cube</button>
+    <p>Shape Color:</p>
+    <button id="changecolortype">Solid Color ☹️</button>
+    Red <input id="redslider" type="range" min="0" max="100" onclick="" value="Red"/>
+    Green  <input id="greenslider" type="range" min="0" max="100" onclick="" value="Green"/>
+    Blue  <input id="blueslider" type="range" min="0" max="100" onclick="" value="Blue"/>
+    <div>
+      Shape Size:  <input id="sizeslider" type="range" min="1" max="100" onclick="" value="Size"/>
+      (Circles Only) Segement Count:  <input id="segmentslider" type="range" min="3" max="100" onclick="" value="Segment"/>
+    </div>
+  </body>
+</html>
