@@ -45,7 +45,7 @@ class InputHandler {
 
       // Button Events:
       this.doc.getElementById("clearcanvas").onclick = function(ev){ _inputHandler.clearcanvas(ev)};
-      this.doc.getElementById("addobject").onclick = function(){ _inputHandler.scene.shape = 7;};
+      this.doc.getElementById("addobject").onclick = function(){_inputHandler.readSelectedFile(0, 0,  _inputHandler.getColorStatus());};
       this.doc.getElementById("changecolortype").onclick = function(){ _inputHandler.changecolor()};
       document.getElementById('texInput').onchange = function() { _inputHandler.readTexture() };
       
