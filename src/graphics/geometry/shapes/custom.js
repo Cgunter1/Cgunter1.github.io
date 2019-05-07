@@ -28,7 +28,7 @@ class CustomOBJ extends Geometry {
 
     // Construct the necessary amount of vertex objects within this.vertices
     for (var i = 0; i < objMesh.indices.length; i++) {
-      this.vertices[i] = new Vertex(null, null, null, null, colorType);
+      this.vertices[i] = new Vertex(null, null, null, color, colorType);
     }
 
     this.modelMatrix = new Matrix4();
