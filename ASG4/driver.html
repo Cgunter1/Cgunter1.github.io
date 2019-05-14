@@ -1,0 +1,47 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title> CMPS160 Base Code </title>
+
+      <!-- Include shaders -->
+      <script src = "src/graphics/shaders/shader.js"></script>
+      <script src = "src/graphics/shaders/asg1.js"></script>
+
+      <!-- Include Base code libs -->
+      <script src = "src/main.js"></script>
+      <script src = "src/input.js"></script>
+      <script src = "src/graphics/renderer.js"></script>
+      <script src = "src/graphics/scene.js"></script>
+      <script src = "src/graphics/camera.js"></script>
+      <script src = "src/graphics/geometry/geometry.js"></script>
+      <script src = "src/graphics/geometry/vertex.js"></script> 
+      <script src = "src/graphics/geometry/shapes/triangle.js"></script>
+      <script src = "src/graphics/geometry/shapes/square.js"></script>
+      <script src = "src/graphics/geometry/shapes/circle.js"></script>
+      <script src = "src/graphics/geometry/shapes/spinsquare.js"></script>
+      <script src = "src/graphics/geometry/shapes/scalingtriangle.js"></script>
+      <script src = "src/graphics/geometry/shapes/randommovingcircle.js"></script>
+      <script src = "src/graphics/geometry/shapes/cube.js"></script>
+      <script src="src/graphics/geometry/shapes/custom.js"></script>
+      <script src="src/graphics/geometry/shapes/text_cube.js"></script>
+      <script src="src/graphics/geometry/uvvertex.js"></script>
+      <script src="src/graphics/geometry/shapes/multi_text_cube.js"></script>
+      <script src="src/graphics/geometry/shapes/tex_cube_with_z.js"></script>
+
+      <!-- Include external libs -->
+      <script src = "lib/webgl-utils.js"></script>
+      <script src = "lib/webgl-render.js"></script>
+      <script src = "lib/webgl-debug.js"></script>
+      <script src = "lib/webgl-loader.js"></script>
+      <script src = "lib/cuon-utils.js"></script>
+      <script src = "lib/cuon-matrix.js"></script>
+
+  </head>
+
+  <body onload = "main()">
+    <canvas id="webgl" width="400" height="400">
+      Please use a browser that supports "canvas"
+    </canvas>
+    <h1>Don't Forget to Mention the keystrokes on how to zoom in. Which is up and down arrows.</h1>
+  </body>
+</html>
